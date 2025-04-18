@@ -1,8 +1,7 @@
 from random import random, choice
 
 def best_selection(population, obj_fn):
-    return max(population, key=obj_fn)
-
+    return min(population, key=obj_fn)
 
 def random_selection(population, _):
     return choice(population)

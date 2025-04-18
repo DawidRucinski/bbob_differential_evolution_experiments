@@ -26,7 +26,7 @@ class DiffEvoConfig:
         return replacements_mapping[self.replacement_strategy]
 
     def get_tournament_fn(self):
-        return lambda x, y, obj_fn: max(x, y, key=obj_fn)
+        return lambda x, y, obj_fn: min(x, y, key=obj_fn)
 
 
 selections_mapping = {

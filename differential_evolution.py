@@ -10,7 +10,7 @@ def arr_sum(a: list, b: list):
     return [x + y for x, y in zip(a, b)]
 
 
-class DiffEvoOptimizer:
+class DiffEvoMinimizer:
     def __init__(self, config=None):
         self.population_init: function = random
 

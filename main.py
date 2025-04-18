@@ -1,4 +1,4 @@
-from differential_evolution import DiffEvoConfig, DiffEvoOptimizer
+from differential_evolution import DiffEvoConfig, DiffEvoMinimizer
 
 
 def main():
@@ -6,12 +6,13 @@ def main():
 
     config.init_population_size = 100
 
-    opt = DiffEvoOptimizer(config=config)
+    opt = DiffEvoMinimizer(config=config)
 
-    def test_fn(x): return sum([-(xi-2)**2 for xi in x])
+    def test_fn(x): return sum([(xi-2)**2 for xi in x])
     end_population = opt(test_fn, dimensionality=3)
 
-    print(end_population)
+    for x in end_population:
+        print(x)
 
 if __name__ == "__main__":
     main()
