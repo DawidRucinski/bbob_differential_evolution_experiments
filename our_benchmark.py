@@ -6,14 +6,14 @@ from differential_evolution import DiffEvoMinimizer, DiffEvoConfig
 suite_name = "bbob"
 
 cfg = DiffEvoConfig()
-de_min = DiffEvoMinimizer(cfg)
+opt = DiffEvoMinimizer(cfg)
 
 budget_multiplier = 1  # x dimension, increase to 3, 10, 30,...
 
 ### prepare
 suite = cocoex.Suite(suite_name, "", "")  # see https://numbbo.github.io/coco-doc/C/#suite-parameters
 output_folder = '{}_of_{}_{}D_on_{}'.format(
-        "DiffEvo", de_min.__module__ or '', int(budget_multiplier), suite_name)
+        cfg, opt.__module__ or '', int(budget_multiplier), suite_name)
 observer = cocoex.Observer(suite_name, "result_folder: " + output_folder)
 repeater = cocoex.ExperimentRepeater(budget_multiplier)  # 0 == no repetitions
 minimal_print = cocoex.utilities.MiniPrint()
@@ -25,7 +25,7 @@ while not repeater.done():  # while budget is left and successes are few
             continue  # skip this problem
         problem.observe_with(observer)  # generate data for cocopp
         problem(problem.dimension * [0])  # for better comparability
-        xopt = de_min(problem, problem.dimension)
+        xopt = opt(problem, problem.dimension)
 
         problem(xopt)  # make sure the returned solution is evaluated
         repeater.track(problem)  # track evaluations and final_target_hit
