@@ -14,7 +14,7 @@ class DiffEvoMinimizer:
         self.tournament:  function = config.get_tournament_fn()
 
     def __call__(self, objective_function, dimensionality):
-        population = rd.random(size=(self.config.init_population_size, dimensionality))
+        population = 2 * rd.random(size=(self.config.init_population_size, dimensionality)) - 1.0
 
         for _ in range(10):  # TODO set actual stop condition
             for i, p in enumerate(population):
