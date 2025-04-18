@@ -1,14 +1,7 @@
 from random import random, choices
 from evolution_config import DiffEvoConfig
-
-
-def diff_multiplied(a: list, b: list, multiplier: float):
-    return [multiplier*(x1 - x2) for (x1, x2) in zip(a, b)]
-
-
-def arr_sum(a: list, b: list):
-    return [x + y for x, y in zip(a, b)]
-
+import numpy as np
+from numpy import random as rd
 
 class DiffEvoMinimizer:
     def __init__(self, config=None):
@@ -21,8 +14,7 @@ class DiffEvoMinimizer:
         self.tournament:  function = config.get_tournament_fn()
 
     def __call__(self, objective_function, dimensionality):
-        population = [[self.population_init() for _ in range(dimensionality)]
-                      for i in range(self.config.init_population_size)]
+        population = rd.random(size=(self.config.init_population_size, dimensionality))
 
         for _ in range(10):  # TODO set actual stop condition
             for i, p in enumerate(population):
@@ -30,11 +22,11 @@ class DiffEvoMinimizer:
                 r = self.selection(population, objective_function)
 
                 # modifying r based on differences between pairs
-                M = r
+                M = np.array(r)
                 for _ in range(self.config.crossover_count):
                     d1, e1 = choices(population, k=2)
                     F = 1/2  # TODO: parametrize
-                    M = arr_sum(M, diff_multiplied(d1, e1, F))
+                    M += F*(d1 - e1)
 
                 O = self.crossover(r, M, self.config.crossover_rate)
                 population[i] = self.tournament(p, O, objective_function)
