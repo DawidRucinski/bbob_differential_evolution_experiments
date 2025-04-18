@@ -9,10 +9,9 @@ def main():
     opt = DiffEvoMinimizer(config=config)
 
     def test_fn(x): return sum([(xi-2)**2 for xi in x])
-    end_population = opt(test_fn, dimensionality=3)
+    result = opt(test_fn, dimensionality=3)
 
-    for x in end_population:
-        print(x)
+    print(result)
 
 if __name__ == "__main__":
     main()
