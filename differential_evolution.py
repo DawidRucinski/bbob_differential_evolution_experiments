@@ -39,4 +39,4 @@ class DiffEvoMinimizer:
                 O = self.crossover(r, M, self.config.crossover_rate)
                 population[i] = self.tournament(p, O, objective_function)
 
-        return population
+        return min(population, key=objective_function)

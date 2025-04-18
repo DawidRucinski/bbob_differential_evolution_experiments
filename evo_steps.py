@@ -9,7 +9,6 @@ def random_selection(population, _):
 def binary_crossover(x, y, cr):
     return [yi if (random() < cr) else xi for (xi, yi) in zip(x, y)]
 
-
 def exponential_crossover(x, y, cr):
     # calculate cutoff point (TODO: can be optimized by using exp distribution random fn)
     cutoff = 0
