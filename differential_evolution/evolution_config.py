@@ -1,4 +1,4 @@
-from evo_steps import *
+from .evo_steps import *
 
 
 class DiffEvoConfig:

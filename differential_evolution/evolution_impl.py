@@ -1,7 +1,8 @@
 from random import random, choices
-from evolution_config import DiffEvoConfig
 import numpy as np
 from numpy import random as rd
+
+from .evolution_config import DiffEvoConfig
 
 class DiffEvoMinimizer:
     def __init__(self, config=None):
@@ -19,7 +20,7 @@ class DiffEvoMinimizer:
     def __call__(self, objective_function, dimensionality):
         population = 2 * rd.random(size=(self.init_population_size, dimensionality)) - 1.0
 
-        for _ in range(10):  # TODO set actual stop condition
+        for _ in range(25):  # TODO set actual stop condition
             for i, p in enumerate(population):
                 # working point
                 r = self.selection(population, objective_function)
