@@ -16,6 +16,15 @@ class DiffEvoConfig:
         # replacement mechanism
         self.replacement_strategy: str = ""
 
+    def get_init_population_size(self):
+        return self.init_population_size
+
+    def get_crossover_count(self):
+        return self.crossover_count
+
+    def get_crossover_rate(self):
+        return self.crossover_rate
+
     def get_selection_fn(self):
         return selections_mapping[self.selection_strategy]
 
