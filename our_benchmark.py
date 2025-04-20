@@ -12,8 +12,7 @@ budget_multiplier = 1  # x dimension, increase to 3, 10, 30,...
 
 ### prepare
 suite = cocoex.Suite(suite_name, "", "")  # see https://numbbo.github.io/coco-doc/C/#suite-parameters
-output_folder = '{}_of_{}_{}D_on_{}'.format(
-        cfg, opt.__module__ or '', int(budget_multiplier), suite_name)
+output_folder = '{}_{}D_on_{}'.format(cfg, int(budget_multiplier), suite_name)
 observer = cocoex.Observer(suite_name, "result_folder: " + output_folder)
 repeater = cocoex.ExperimentRepeater(budget_multiplier)  # 0 == no repetitions
 minimal_print = cocoex.utilities.MiniPrint()
