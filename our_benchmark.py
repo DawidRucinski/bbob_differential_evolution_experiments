@@ -6,6 +6,10 @@ from differential_evolution import DiffEvoMinimizer, DiffEvoConfig
 suite_name = "bbob"
 
 cfg = DiffEvoConfig()
+cfg.init_population_size = 50
+cfg.replaced_count = 15
+cfg.replacement_strategy = "random"
+
 opt = DiffEvoMinimizer(cfg)
 
 budget_multiplier = 1  # x dimension, increase to 3, 10, 30,...
