@@ -38,10 +38,10 @@ def random_replacement(population, obj_fn, replaced_count):
 
     # TODO: discuss and parametrize
     # maximum distance from furthest coordinate along an axis
-    max_distance = 1
+    max_distance_per_idx = 1.0
 
-    minimums = population.min(axis=0)
-    maximums = population.max(axis=0)    
+    minimums = population.min(axis=0) - max_distance_per_idx
+    maximums = population.max(axis=0) + max_distance_per_idx
 
     # random point from a uniform distribution on each attribute separately
     for i in range(replaced_count):
