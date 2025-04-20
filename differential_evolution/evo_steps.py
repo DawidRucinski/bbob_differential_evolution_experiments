@@ -33,5 +33,18 @@ def noisy_best_replacement(population, obj_fn, replaced_count):
 
     return population
 
-def random_replacement():
-    pass
+def random_replacement(population, obj_fn, replaced_count):
+    population = np.array(sorted(population, key=obj_fn))
+
+    # TODO: discuss and parametrize
+    # maximum distance from furthest coordinate along an axis
+    max_distance = 1
+
+    minimums = population.min(axis=0)
+    maximums = population.max(axis=0)    
+
+    # random point from a uniform distribution on each attribute separately
+    for i in range(replaced_count):
+        population[-i-1] = minimums + nprd.random(size=minimums.size) * (maximums - minimums)
+
+    return population

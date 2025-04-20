@@ -58,4 +58,5 @@ crossovers_mapping = {
 replacements_mapping = {
     "": None,
     "noisy_best": noisy_best_replacement,
+    "random" : random_replacement,
 }
