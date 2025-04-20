@@ -5,6 +5,9 @@ def main():
     config = DiffEvoConfig()
 
     config.init_population_size = 100
+    config.replacement_strategy = "noisy_best"
+
+    print(config)
 
     opt = DiffEvoMinimizer(config=config)
 

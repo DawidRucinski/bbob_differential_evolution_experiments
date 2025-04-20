@@ -18,7 +18,7 @@ class DiffEvoConfig:
         self.replaced_count = 20
 
     def __repr__(self):
-        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}"
+        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_POP{self.init_population_size}"
 
     def get_init_population_size(self):
         return self.init_population_size
