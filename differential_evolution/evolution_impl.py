@@ -11,6 +11,7 @@ class DiffEvoMinimizer:
         self.init_population_size = config.get_init_population_size()
         self.crossover_count = config.get_crossover_count()
         self.crossover_rate = config.get_crossover_rate()
+        self.replaced_count = config.get_replaced_count()
 
         self.selection:   function = config.get_selection_fn()
         self.crossover:   function = config.get_crossover_fn()
@@ -34,5 +35,7 @@ class DiffEvoMinimizer:
 
                 O = self.crossover(r, M, self.crossover_rate)
                 population[i] = self.tournament(p, O, objective_function)
+
+            population = self.replacement(population, objective_function, self.replaced_count)
 
         return min(population, key=objective_function)

@@ -1,5 +1,6 @@
 from random import random, choice
 import numpy as np
+from numpy import random as nprd
 
 def best_selection(population, obj_fn):
     return min(population, key=obj_fn)
@@ -16,3 +17,21 @@ def exponential_crossover(x, y, cr):
     while random() < cr and cutoff < len(x):
         cutoff += 1
     return np.concatenate((y[:cutoff], x[cutoff:]))
+
+def noisy_best_replacement(population, obj_fn, replaced_count):
+    # TODO: parametrize
+    # how many of the best fitting entities should be used for replacement 
+    num_best = replaced_count
+    population = sorted(population, key=obj_fn)
+
+ 
+    for i in range(replaced_count):
+        copied_best = choice(population[:num_best])
+        # TODO: parametrize
+        # currently applies linearly-distributed noise from range [-1.0; +1.0]
+        population[-i-1] = copied_best + 2.0*nprd.random(len(copied_best)) - 1.0
+
+    return population
+
+def random_replacement():
+    pass

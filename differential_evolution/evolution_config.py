@@ -15,6 +15,7 @@ class DiffEvoConfig:
 
         # replacement mechanism
         self.replacement_strategy: str = ""
+        self.replaced_count = 20
 
     def __repr__(self):
         return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}"
@@ -28,6 +29,9 @@ class DiffEvoConfig:
     def get_crossover_rate(self):
         return self.crossover_rate
 
+    def get_replaced_count(self):
+        return self.replaced_count
+    
     def get_selection_fn(self):
         return selections_mapping[self.selection_strategy]
 
@@ -52,5 +56,6 @@ crossovers_mapping = {
 }
 
 replacements_mapping = {
-    "": lambda x: x,
+    "": None,
+    "noisy_best": noisy_best_replacement,
 }
