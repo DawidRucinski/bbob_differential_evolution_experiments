@@ -36,6 +36,7 @@ class DiffEvoMinimizer:
                 O = self.crossover(r, M, self.crossover_rate)
                 population[i] = self.tournament(p, O, objective_function)
 
-            population = self.replacement(population, objective_function, self.replaced_count)
+            if self.replacement:
+                population = self.replacement(population, objective_function, self.replaced_count)
 
         return min(population, key=objective_function)
