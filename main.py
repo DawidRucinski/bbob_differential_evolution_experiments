@@ -1,7 +1,12 @@
 from differential_evolution import DiffEvoConfig, DiffEvoMinimizer
+from numpy import random as nprd
+import random as rd
 
 
 def main():
+    rd.seed(13)
+    nprd.seed(12)  
+
     config = DiffEvoConfig()
 
     config.init_population_size = 100
