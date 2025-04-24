@@ -6,7 +6,7 @@ from .population import SortedPopulation
 
 class DiffEvoMinimizer:
     def __init__(self, config=None):
-        config = config or DiffEvoConfig()
+        self.config = config or DiffEvoConfig()
 
         self.init_population_size = config.get_init_population_size()
         self.crossover_count = config.get_crossover_count()
@@ -20,7 +20,12 @@ class DiffEvoMinimizer:
 
     def __call__(self, objective_function, dimensionality):
         population = SortedPopulation(
-            self.init_population_size, dimensionality, objective_function)
+            self.init_population_size, 
+            dimensionality, 
+            objective_function,
+            init_strategy=self.config.get_init_strategy(),
+            bounds=self.config.get_init_bounds()
+        )
 
         for _ in range(25):  # TODO set actual stop condition
             for i, p in enumerate(population.get_population()):

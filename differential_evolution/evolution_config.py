@@ -5,7 +5,8 @@ class DiffEvoConfig:
     def __init__(self):
         # population initialization
         self.init_population_size: int = 100
-        self.population_init_fn: str = ""
+        self.init_strategy: str = "latin_hypercube"  # "uniform", "normal", or "latin_hypercube"
+        self.init_bounds = (-1.0, 1.0)  # Search space bounds for initialization
 
         # common DE steps
         self.selection_strategy: str = "best"
@@ -18,8 +19,15 @@ class DiffEvoConfig:
         self.replaced_count = 20
 
     def __repr__(self):
-        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_POP{self.init_population_size}"
-
+        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_POP{self.init_population_size}_{self.init_strategy}"
+    
+    # Add getter methods for the new parameters
+    def get_init_strategy(self):
+        return self.init_strategy
+        
+    def get_init_bounds(self):
+        return self.init_bounds
+    
     def get_init_population_size(self):
         return self.init_population_size
 

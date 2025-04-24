@@ -1,15 +1,17 @@
 import numpy.random as rd
 import numpy as np
+from .population_init import init_strategies
 
 class SortedPopulation:
-    def __init__(self, count, dimensionality, objective_fn):
+    def __init__(self, count, dimensionality, objective_fn, init_strategy="uniform", bounds=(-1.0, 1.0)):
         self.objective_fn = objective_fn
-
-        # TODO: decide on and parametrize population initialization
-        self.population = 2 * rd.random(size=(count, dimensionality)) - 1.0
+        
+        # Get the initialization function from the dictionary
+        init_fn = init_strategies.get(init_strategy, init_strategies["uniform"])
+        
+        # Initialize population using the selected strategy
+        self.population = init_fn(count, dimensionality, bounds)
         self.scores = np.array([objective_fn(x) for x in self.population])
-
-
         self.sort()
 
     def sort(self):
