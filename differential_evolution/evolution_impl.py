@@ -49,7 +49,11 @@ class DiffEvoMinimizer:
                     d1, e1 = choices(pop.get_population(), k=2)
                     M += self.differential_weight * (d1 - e1)
 
-                trial  = self.crossover(r, M, self.crossover_rate)
+                if self.crossover_rate < 1.0:
+                    trial  = self.crossover(r, M, self.crossover_rate)
+                else:
+                    trial = M
+
                 winner = self.tournament(current, trial, objective_function)
                 pop.overwrite(i, winner)
 
