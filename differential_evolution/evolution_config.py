@@ -39,6 +39,9 @@ class DiffEvoConfig:
             f"_rep={self.replacement_strategy}{self.replaced_count}"
             f"_POP{self.init_population_size}_{self.init_strategy}"
         )
+    
+    def short_repr(self):
+        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_{self.init_strategy}_{self.init_population_size}"
 
     def get_init_strategy(self):
         return self.init_strategy
