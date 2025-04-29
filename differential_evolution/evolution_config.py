@@ -14,14 +14,40 @@ class DiffEvoConfig:
         self.crossover_count: int = 2
         self.crossover_rate: float = 0.5
 
+
+        self.differential_weight: float = 0.5     #F parameter
+        self.max_generations: int = 100           
+        self.tolerance: float = 1e-6             # Convergence treshold
+
+
         # replacement mechanism
         self.replacement_strategy: str = ""
         self.replaced_count = 20
 
-    def __repr__(self):
-        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_POP{self.init_population_size}_{self.init_strategy}"
+        def __repr__(self):
+            return (
+                f"DE_sel={self.selection_strategy}"
+                f"_xr={self.crossover_strategy}"
+                f"_ncr={self.crossover_count}"
+                f"_cr={self.crossover_rate:.2f}"
+                f"_F={self.differential_weight:.2f}"
+                f"_gens={self.max_generations}"
+                f"_tol={self.tolerance}"
+                f"_rep={self.replacement_strategy}{self.replaced_count}"
+                f"_POP{self.init_population_size}_{self.init_strategy}"
+            )
     
     # Add getter methods for the new parameters
+
+    def get_differential_weight(self) -> float:
+        return self.differential_weight
+
+    def get_max_generations(self) -> int:
+        return self.max_generations
+
+    def get_tolerance(self) -> float:
+        return self.tolerance
+
     def get_init_strategy(self):
         return self.init_strategy
         
