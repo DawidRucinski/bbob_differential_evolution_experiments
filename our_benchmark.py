@@ -5,7 +5,7 @@ from differential_evolution import DiffEvoMinimizer, DiffEvoConfig
 import random as rd
 import numpy.random as nprd
 
-def run_suite(cfg):
+def run_suite(cfg, output_folder=None):
     rd.seed(13)
     nprd.seed(12)  
 
@@ -16,9 +16,6 @@ def run_suite(cfg):
 
     ### prepare
     suite = cocoex.Suite(suite_name, "", "")  # see https://numbbo.github.io/coco-doc/C/#suite-parameters
-
-    #output_folder = '{}_{}D_on_{}'.format(cfg.short_repr(), int(budget_multiplier), suite_name)
-    output_folder =  '{}_{}D_on_{}'.format(cfg.param_optim_repr(), int(budget_multiplier), suite_name)
 
     observer = cocoex.Observer(suite_name, "result_folder: " + output_folder)
     repeater = cocoex.ExperimentRepeater(budget_multiplier)  # 0 == no repetitions
@@ -38,7 +35,7 @@ def run_suite(cfg):
             minimal_print(problem)  # show progress
 
     ### post-process data 
-    cocopp.main(observer.result_folder + ' bfgs!');  # re-run folders look like "...-001" etc
+    # cocopp.main(observer.result_folder + ' bfgs!');  # re-run folders look like "...-001" etc
 
 
 def create_vanilla_cfg():
@@ -49,42 +46,33 @@ def create_vanilla_cfg():
     cfg.min_generations_before_convergence = 5
     cfg.tolerance = 1e-8
 
+    cfg.init_population_size = 100
+    cfg.differential_weight = 0.4
+    cfg.crossover_rate = 0.9
+
     return cfg
 
 def population_tests():
     vanilla_cfg = create_vanilla_cfg()
 
-    vanilla_cfg.init_population_size = 100
-    vanilla_cfg.differential_weight = 0.4
-    vanilla_cfg.crossover_rate = 0.9
-
     for pop_size in [25, 50, 100, 200]:
         vanilla_cfg.init_population_size = pop_size
-        run_suite(vanilla_cfg)
+        run_suite(vanilla_cfg, f"V_pop{pop_size}")
 
 
 def crossover_rate_tests():
     vanilla_cfg = create_vanilla_cfg()
 
-    vanilla_cfg.init_population_size = 100
-    vanilla_cfg.differential_weight = 0.4
-    vanilla_cfg.crossover_rate = 0.9
-
     for rate in [0.2, 0.4, 0.5, 0.8, 1.0]:
         vanilla_cfg.crossover_rate = rate
-        run_suite(vanilla_cfg)
+        run_suite(vanilla_cfg, f"V_cr{rate}")
 
 def differential_weight_tests():
     vanilla_cfg = create_vanilla_cfg()
 
-    vanilla_cfg.init_population_size = 100
-    vanilla_cfg.differential_weight = 0.4
-    vanilla_cfg.crossover_rate = 0.9
-
     for weight in [0.2, 0.4, 0.5, 0.8, 1.0]:
         vanilla_cfg.differential_weight = weight
-        run_suite(vanilla_cfg)
-
+        run_suite(vanilla_cfg, f"V_F{weight}")
 
 
 def main():
