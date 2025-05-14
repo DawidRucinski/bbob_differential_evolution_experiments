@@ -42,6 +42,10 @@ class DiffEvoConfig:
     
     def short_repr(self):
         return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_{self.init_strategy}_{self.init_population_size}"
+    
+    def param_optim_repr(self):
+        """Represents parameters relevant in parameter optimization"""
+        return f"Vanilla_pop{self.init_population_size}_CR{self.crossover_rate}_F{self.differential_weight}_tol{self.tolerance}"
 
     def get_init_strategy(self):
         return self.init_strategy
