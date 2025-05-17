@@ -6,12 +6,12 @@ import random as rd
 import numpy.random as nprd
 
 
-def run_suite(cfg: DiffEvoConfig, output_folder: str = None, alg_name: str = None, suite_options: str = None, postprocess=False):
+def run_suite(cfg: DiffEvoConfig, output_folder: str = None, alg_name: str = None, suite_options: str = None, postprocess=False, seed = 12321):
     """ Run benchmarks on DiffEvoMinimizer with given config on default bbob suite"""
 
     # reinitialize seeds to make each suite run reproducible independently
-    rd.seed(13)
-    nprd.seed(12)
+    rd.seed(seed)
+    nprd.seed(seed)
 
     SUITE = "bbob"
     BUDGET = 1
