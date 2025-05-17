@@ -1,25 +1,24 @@
-from differential_evolution import DiffEvoConfig, DiffEvoMinimizer
-from numpy import random as nprd
-import random as rd
-
+from benchmark import run_suite
+from differential_evolution import DiffEvoConfig
 
 def main():
-    rd.seed(13)
-    nprd.seed(12)  
+    cfg = DiffEvoConfig()
+    cfg.replaced_count = 0
+    cfg.replacement_strategy = ""
+    
+    cfg.min_generations_before_convergence = 5
+    cfg.tolerance = 1e-8
 
-    config = DiffEvoConfig()
+    cfg.init_strategy = "normal"
+    cfg.init_bounds = (-10.0, 10.0)
+    cfg.init_population_size = 100
+    
+    cfg.differential_weight = 0.4
+    cfg.crossover_rate = 0.9
 
-    config.init_population_size = 100
-    config.replacement_strategy = "noisy_best"
 
-    print(config)
 
-    opt = DiffEvoMinimizer(config=config)
 
-    def test_fn(x): return sum([(xi-2)**2 for xi in x])
-    result = opt(test_fn, dimensionality=3)
-
-    print(result)
 
 if __name__ == "__main__":
     main()
