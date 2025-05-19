@@ -1,6 +1,8 @@
 from benchmark import run_suite, DiffEvoConfig
 import cocopp
 
+import os
+
 def create_vanilla_cfg():
     cfg = DiffEvoConfig()
     cfg.replaced_count = 0
@@ -26,7 +28,7 @@ def population_tests(seed):
         vanilla_cfg.init_population_size = pop_size
 
         output_folder = f"V_pop{pop_size}"
-        run_suite(vanilla_cfg, output_folder, f"V_pop{pop_size}", seed=seed, postprocess=False)
+        run_suite(vanilla_cfg, output_folder, f" V_pop{pop_size}", seed=seed, postprocess=False)
         folders.append(output_folder)
 
     return folders
@@ -64,9 +66,11 @@ def main():
     cr_folders = crossover_rate_tests(SEED)
     F_folders = differential_weight_tests(SEED)
 
+    # change dir to avoid ugly output filename
+    os.chdir("exdata")
     # post-process each variable test
     for folder in [pop_folders, cr_folders, F_folders]:
-        cocopp.main(" ".join([exp for exp in folder]))
+        cocopp.main(" ".join([f"{exp}" for exp in folder]))
 
 if __name__ == "__main__":
      main()
