@@ -18,19 +18,30 @@ def exponential_crossover(x, y, cr):
 
 def noisy_best_replacement(population, obj_fn, replaced_count, noise_range=(-1.0, 1.0)):
     num_best = replaced_count
-    replacers = population.get_n_best(num_best)
+    best_entities = population.get_n_best(num_best)
     low, high = noise_range
-    for i in range(replaced_count):
-        copied_best = choice(replacers)
+   
+    def create_replacement():
+        copied_best = choice(best_entities)
         noise = low + (high - low) * nprd.random(len(copied_best))
-        population.overwrite(-i-1, copied_best + noise)
+        
+        return copied_best + noise
+        
+    replacers = [create_replacement() for _ in range(replaced_count)]
+    population.replace_range(population.len() - replaced_count, replacers)
+
+
     return population
 
 
 def random_replacement(population, obj_fn, replaced_count, max_distance_per_idx=1.0):
     minimums = population.get_population().min(axis=0) - max_distance_per_idx
     maximums = population.get_population().max(axis=0) + max_distance_per_idx
-    for i in range(replaced_count):
-        random_point = minimums + nprd.random(size=minimums.size) * (maximums - minimums)
-        population.overwrite(-i-1, random_point)
+    
+    def create_replacement():
+        return minimums + nprd.random(size=minimums.size) * (maximums - minimums)
+    
+    replacers = [create_replacement() for _ in range(replaced_count)]
+    population.replace_range(population.len() - replaced_count, replacers)
+    
     return population

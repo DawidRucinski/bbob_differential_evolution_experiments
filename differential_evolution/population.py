@@ -35,5 +35,18 @@ class SortedPopulation:
         self.population = np.insert(self.population, insert_idx, entity, axis=0)
         self.scores = np.insert(self.scores, insert_idx, entity_score, axis=0)
 
+
+    def replace_range(self, start_idx, entities):
+        assert (len(entities) + start_idx) <= len(self.population) 
+
+        for i, entity in enumerate(entities):
+            self.population[start_idx + i] = entity
+            self.scores[start_idx + i] = self.objective_fn(entity)
+
+        self.sort()
+
     def get_n_best(self, n):
         return self.population[:n]
+    
+    def len(self):
+        return len(self.population)
