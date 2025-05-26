@@ -45,8 +45,25 @@ def replaced_fraction_tests(replacement_strategy, seed):
     for fract in [0.1, 0.2, 0.3, 0.4, 0.5]:
         cfg.replaced_count = int(fract*cfg.init_population_size)
 
-        output_folder = f"{replacement_strategy}_fract{fract}"
-        run_suite(cfg, output_folder, f"{alg_name(replacement_strategy)}_fract{fract}", seed=seed, postprocess=False)
+        output_folder = f"{alg_name(replacement_strategy)}_fract{fract}"
+        run_suite(cfg, output_folder, output_folder, seed=seed, postprocess=False)
+        folders.append(output_folder)
+
+    return folders
+
+def replaced_distance_tests(replacement_strategy, seed):
+    cfg = create_vanilla_cfg()
+    cfg.replacement_strategy = replacement_strategy
+    cfg.replaced_count = int(0.2*cfg.init_population_size)
+
+    folders = []
+
+    for distance in [5.0, 10.0, 20.0, 50.0, 100.0]:
+        cfg.random_replacement_max_distance = distance
+        cfg.noisy_best_noise_range = (-distance, distance)
+
+        output_folder = f"{alg_name(replacement_strategy)}_d{distance}"
+        run_suite(cfg, output_folder, output_folder, seed=seed, postprocess=False)
         folders.append(output_folder)
 
     return folders
@@ -56,10 +73,15 @@ def main():
     rr_fraction_folders = replaced_fraction_tests("random", SEED)
     nb_fraction_folders = replaced_fraction_tests("noisy_best", SEED)
     
+    rr_distance_folders = replaced_distance_tests("random", SEED)
+    nb_distance_folders = replaced_distance_tests("noisy_best", SEED)
+
+    
     # change dir to avoid ugly output filename
     os.chdir("exdata")
     # post-process each variable test
-    for folder in [rr_fraction_folders, nb_fraction_folders]:
+    
+    for folder in [rr_fraction_folders, nb_fraction_folders, rr_distance_folders, nb_distance_folders]:
         cocopp.main(" ".join([f"{exp}" for exp in folder]))
 
 if __name__ == "__main__":
