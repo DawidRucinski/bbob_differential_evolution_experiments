@@ -27,6 +27,8 @@ class DiffEvoConfig:
 
         self.min_generations_before_convergence: int = 50
         self.patience: int = 10
+
+        self.hybrid_random_prob = 0.5  # default probability for random replacement in hybrid
     def __repr__(self):
         return (
             f"DE_sel={self.selection_strategy}"
@@ -99,7 +101,8 @@ class DiffEvoConfig:
             return partial(
                 base,
                 noise_range=self.get_noisy_best_noise_range(),
-                max_distance_per_idx=self.get_random_replacement_max_distance()
+                max_distance_per_idx=self.get_random_replacement_max_distance(),
+                p_random=getattr(self, "hybrid_random_prob", 0.5),
             )
         return base
 
