@@ -76,13 +76,18 @@ def main():
     rr_distance_folders = replaced_distance_tests("random", SEED)
     nb_distance_folders = replaced_distance_tests("noisy_best", SEED)
 
+
+    hybrid_fraction_folders = replaced_fraction_tests("hybrid", SEED)
+    hybrid_distance_folders = replaced_distance_tests("hybrid", SEED)
     
     # change dir to avoid ugly output filename
     os.chdir("exdata")
     # post-process each variable test
     
-    for folder in [rr_fraction_folders, nb_fraction_folders, rr_distance_folders, nb_distance_folders]:
-        cocopp.main(" ".join([f"{exp}" for exp in folder]))
+    for folder in [rr_fraction_folders, nb_fraction_folders,
+               rr_distance_folders, nb_distance_folders,
+               hybrid_fraction_folders, hybrid_distance_folders]:
+        cocopp.main(" ".join(folder))
 
 if __name__ == "__main__":
      main()

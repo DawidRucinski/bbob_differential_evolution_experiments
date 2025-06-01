@@ -90,11 +90,19 @@ class DiffEvoConfig:
         base = replacements_mapping[self.replacement_strategy]
         if base is None:
             return None
+
         if self.replacement_strategy == "noisy_best":
             return partial(base, noise_range=self.get_noisy_best_noise_range())
-        if self.replacement_strategy == "random":
+        elif self.replacement_strategy == "random":
             return partial(base, max_distance_per_idx=self.get_random_replacement_max_distance())
+        elif self.replacement_strategy == "hybrid":
+            return partial(
+                base,
+                noise_range=self.get_noisy_best_noise_range(),
+                max_distance_per_idx=self.get_random_replacement_max_distance()
+            )
         return base
+
 
     def get_tournament_fn(self):
         return lambda x, y, obj_fn: min(x, y, key=obj_fn)
@@ -120,4 +128,5 @@ replacements_mapping = {
     "":           None,
     "noisy_best": noisy_best_replacement,
     "random":     random_replacement,
+    "hybrid": hybrid_replacement
 }
