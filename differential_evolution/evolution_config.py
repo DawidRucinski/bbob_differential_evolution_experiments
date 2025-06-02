@@ -4,19 +4,19 @@ from functools import partial
 class DiffEvoConfig:
     def __init__(self):
         # population initialization
-        self.init_population_size: int = 100
-        self.init_strategy: str = "latin_hypercube"  # "uniform", "normal", or "latin_hypercube"
-        self.init_bounds = (-1.0, 1.0)  # Search space bounds for initialization
+        self.init_population_size: int = 200
+        self.init_strategy: str = "normal"
+        self.init_bounds = (-1.0, 1.0)
 
         # common DE steps
         self.selection_strategy: str = "best"
         self.crossover_strategy: str = "exp"
         self.crossover_count: int = 2
-        self.crossover_rate: float = 0.5
+        self.crossover_rate: float = 0.9
 
-        self.differential_weight: float = 0.5     #F parameter
+        self.differential_weight: float = 0.4
         self.max_generations: int    = 100
-        self.tolerance: float        = 1e-6      # Convergence treshold
+        self.tolerance: float        = 1e-6
 
         self.noisy_best_noise_range    = (-1.0, +1.0)
         self.random_replacement_max_distance = 1.0
@@ -28,7 +28,12 @@ class DiffEvoConfig:
         self.min_generations_before_convergence: int = 50
         self.patience: int = 10
 
-        self.hybrid_random_prob = 0.5  # default probability for random replacement in hybrid
+        # hybrid
+        self.hybrid_random_prob = 0.5
+
+        # --- nowa właściwość: nazwa funkcji ---
+        self.function_name: str = ""
+
     def __repr__(self):
         return (
             f"DE_sel={self.selection_strategy}"
@@ -41,13 +46,25 @@ class DiffEvoConfig:
             f"_rep={self.replacement_strategy}{self.replaced_count}"
             f"_POP{self.init_population_size}_{self.init_strategy}"
         )
-    
+
+    def set_function_name(self, name: str):
+        self.function_name = name
+
+    def get_function_name(self) -> str:
+        return self.function_name or "unknown_func"
+
     def short_repr(self):
-        return f"DE_{self.selection_strategy}_{self.crossover_strategy}_{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_{self.init_strategy}_{self.init_population_size}"
-    
+        return (
+            f"DE_{self.selection_strategy}_{self.crossover_strategy}_"
+            f"{self.crossover_count}_{self.replacement_strategy}_{self.replaced_count}_"
+            f"{self.init_strategy}_{self.init_population_size}"
+        )
+
     def param_optim_repr(self):
-        """Represents parameters relevant in parameter optimization"""
-        return f"Vanilla_pop{self.init_population_size}_CR{self.crossover_rate}_F{self.differential_weight}_tol{self.tolerance}"
+        return (
+            f"Vanilla_pop{self.init_population_size}_CR{self.crossover_rate}_"
+            f"F{self.differential_weight}_tol{self.tolerance}"
+        )
 
     def get_init_strategy(self):
         return self.init_strategy
@@ -92,7 +109,6 @@ class DiffEvoConfig:
         base = replacements_mapping[self.replacement_strategy]
         if base is None:
             return None
-
         if self.replacement_strategy == "noisy_best":
             return partial(base, noise_range=self.get_noisy_best_noise_range())
         elif self.replacement_strategy == "random":
@@ -102,20 +118,19 @@ class DiffEvoConfig:
                 base,
                 noise_range=self.get_noisy_best_noise_range(),
                 max_distance_per_idx=self.get_random_replacement_max_distance(),
-                p_random=getattr(self, "hybrid_random_prob", 0.5),
+                p_random=self.hybrid_random_prob
             )
         return base
 
-
     def get_tournament_fn(self):
         return lambda x, y, obj_fn: min(x, y, key=obj_fn)
-    
 
     def get_min_generations_before_convergence(self) -> int:
         return self.min_generations_before_convergence
 
     def get_patience(self) -> int:
         return self.patience
+    
 
 selections_mapping = {
     "best":   best_selection,

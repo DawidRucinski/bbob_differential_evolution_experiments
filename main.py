@@ -15,7 +15,7 @@ def main():
     
     cfg.differential_weight = 0.4
     cfg.crossover_rate = 0.9
-
+    
 
 
 
